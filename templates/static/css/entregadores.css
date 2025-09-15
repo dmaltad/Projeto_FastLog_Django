@@ -1,0 +1,122 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+}
+
+.bg-gradient-custom {
+    /* background-image: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%); */
+    background: linear-gradient(45deg, #1b3a5b, #10639e);
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #fff;
+}
+
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: #fff;
+}
+
+.btn-primary.rounded-pill {
+    /* background-image: linear-gradient(45deg, #6c5ce7 0%, #00cec9 100%); */
+    background: linear-gradient(45deg, #1b3a5b, #10639e);
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-pills .nav-link {
+    color: #555;
+    background-color: #e9ecef;
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link:hover {
+    color: #fff;
+    /* background-image: linear-gradient(45deg, #6c5ce7 0%, #00cec9 100%); */
+    background: linear-gradient(45deg, #1b3a5b, #10639e);
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    /* background-image: linear-gradient(45deg, #6c5ce7 0%, #00cec9 100%); */
+    background: linear-gradient(45deg, #1b3a5b, #10639e);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.table-primary {
+    /* background-image: linear-gradient(45deg, #6c5ce7 0%, #00cec9 100%); */
+    background: linear-gradient(45deg, #1b3a5b, #10639e);
+    color: #fff;
+}
+
+.badge-status {
+    min-width: 130px;
+    text-align: center;
+    
+}
+
+.img-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+/* Responsividade da tabela */
+@media (max-width: 767.98px) {
+
+    /* Oculta o cabeçalho da tabela */
+    table thead {
+        display: none;
+    }
+
+    /* Faz com que cada linha da tabela se comporte como um bloco */
+    table tbody tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 1px solid #dee2e6;
+        border-radius: .25rem;
+        padding: 1rem;
+    }
+
+    /* Faz com que cada célula da tabela se comporte como um bloco */
+    table td {
+        display: block;
+        text-align: right !important;
+        padding-left: 50% !important;
+        position: relative;
+    }
+
+    /* Cria a "etiqueta" com o nome da coluna */
+    table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: calc(50% - 1.5rem);
+        text-align: left;
+        font-weight: bold;
+    }
+
+    /* Alinha os botões de ação */
+    .acoes-mobile {
+        text-align: center !important;
+        margin-top: 1rem;
+    }
+}

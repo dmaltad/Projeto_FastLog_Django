@@ -1,0 +1,106 @@
+/* Estilos para a página de Relatórios */
+
+/* Importa a fonte Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f9;
+}
+
+/* Estilo para a barra de navegação */
+.navbar {
+    border-bottom: 2px solid #e9ecef;
+}
+
+.bg-gradient-custom {
+    /* background-image: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%); */
+    background: linear-gradient(45deg, #1b3a5b, #10639e);
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.75) !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffffff !important;
+}
+
+.nav-link.active {
+    color: #ffffff !important;
+    
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+/* Estilos gerais para os cards e o contêiner */
+.container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #e9ecef;
+}
+
+.table th, .table td {
+    padding: 1rem;
+}
+
+/* Estilos para impressão */
+@media print {
+    /* Esconde a barra de navegação */
+    .navbar {
+        display: none !important;
+    }
+
+    /* Esconde os filtros e o botão de impressão */
+    .d-flex.gap-2 {
+        display: none !important;
+    }
+
+    /* Adiciona margens para melhor visualização na página impressa */
+    .container-fluid {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    /* Garante que o texto seja legível */
+    body {
+        background-color: #fff !important;
+        color: #000 !important;
+    }
+    
+    /* Remove sombras e bordas dos cards */
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}
+
+.badge-status {
+    min-width: 130px; /* Define uma largura mínima para todas as badges */
+    text-align: center; /* Centraliza o texto */
+}

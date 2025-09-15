@@ -1,0 +1,43 @@
+.modern-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modern-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modern-card .icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.modern-card .icon-circle i {
+    font-size: 2.5rem;
+}
+
+.modern-card .card-text {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Cores dos ícones */
+.icon-circle.bg-primary {
+    background-color: #0d6efd !important;
+}
+.icon-circle.bg-success {
+    background-color: #198754 !important;
+}
+.icon-circle.bg-warning {
+    background-color: #ffc107 !important;
+}

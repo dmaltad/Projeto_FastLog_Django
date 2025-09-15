@@ -1,0 +1,561 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/pedidos.css' %}">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-custom shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="{% url 'painel' %}">
+                <i class="fas fa-chart-line me-2"></i> Painel Cliente
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" aria-current="page" href="{% url 'painel' %}">
+                            <i class="fas fa-tachometer-alt me-1"></i> Painel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'pedidos' %}">
+                            <i class="fas fa-shopping-cart me-1"></i> Pedidos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'entregadores' %}">
+                            <i class="fas fa-motorcycle me-1"></i> Entregadores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'relatorios' %}">
+                            <i class="fas fa-chart-bar me-1"></i> Relatórios
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex ms-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light rounded-pill dropdown-toggle" type="button"
+                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i> Olá, Usuário
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i> Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configurações</a></li>
+                            <li><hr class="dropdown-divider"></li> -->
+                            <li><a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-sign-out-alt me-2"></i>
+                                    Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0 text-dark fw-bold">Pedidos</h1>
+            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal"
+                data-bs-target="#novoPedidoModal">
+                <i class="fas fa-plus me-1"></i> Novo Pedido
+            </button>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-9">
+                <ul class="nav nav-pills nav-fill" id="status-filters">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#" data-status="Todos">Todos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-status="Aguardando Coleta">Aguardando Coleta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-status="Em Trânsito">Em Trânsito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-status="Entregue">Entregue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-status="Cancelado">Cancelado</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Buscar pedidos..." id="searchInput">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr class="table-primary">
+                                <th scope="col">ID DO PEDIDO</th>
+                                <th scope="col">NOME DO CLIENTE</th>
+                                <th scope="col">STATUS</th>
+                                <th scope="col">ENTREGADOR ATRIBUÍDO</th>
+                                <th scope="col">VALOR TOTAL</th>
+                                <th scope="col">DATA/HORA</th>
+                                <th scope="col">AÇÕES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pedidosTableBody">
+                            <tr
+                                data-id="P001"
+                                data-cliente="Armando Fonseca"
+                                data-telefone="(11) 98765-4321"
+                                data-endereco="Rua das Flores, 123 - Centro"
+                                data-observacoes="Entregar com urgência"
+                                data-entregador="Ana Souza"
+                                data-status="Aguardando Coleta"
+                                data-taxa="5.00"
+                                data-total="150.00"
+                                data-formas-pagamento="Pix,Dinheiro"
+                                data-pago="Nao"
+                                data-itens='[{"nome":"Sanduíche de frango","quantidade":2,"preco":25.00},{"nome":"Suco de Laranja","quantidade":1,"preco":10.00}]'>
+                                <td data-label="ID DO PEDIDO">#P001</td>
+                                <td data-label="NOME DO CLIENTE">Armando Fonseca</td>
+                                <td data-label="STATUS"><span
+                                        class="badge rounded-pill text-bg-secondary badge-status">Aguardando Coleta</span></td>
+                                <td data-label="ENTREGADOR ATRIBUÍDO">Ana Souza</td>
+                                <td data-label="VALOR TOTAL">R$ 150,00</td>
+                                <td data-label="DATA/HORA">24/10/2025 14:30</td>
+                                <td data-label="AÇÕES" class="acoes-mobile">
+                                    <a href="#" class="btn btn-sm text-secondary print-btn" title="Imprimir"><i class="fas fa-print"></i></a>
+                                    <a href="#" class="btn btn-sm text-info visualize-btn" title="Visualizar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-sm text-primary edit-btn" title="Editar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-sm text-danger delete-btn" title="Deletar"
+                                        data-bs-toggle="modal" data-bs-target="#deletePedidoModal"><i
+                                            class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                            <tr
+                                data-id="P002"
+                                data-cliente="Ana Carla"
+                                data-telefone="(21) 99876-5432"
+                                data-endereco="Avenida Brasil, 456 - Lapa"
+                                data-observacoes=""
+                                data-entregador="Joãozinho Vida Loka"
+                                data-status="Cancelado"
+                                data-taxa="0.00"
+                                data-total="180.00"
+                                data-formas-pagamento="Cartão de Crédito"
+                                data-pago="Nao"
+                                data-itens='[{"nome":"Hambúrguer Gourmet","quantidade":2,"preco":35.00},{"nome":"Batata Frita","quantidade":2,"preco":10.00},{"nome":"Refrigerante","quantidade":2,"preco":5.00}]'>
+                                <td data-label="ID DO PEDIDO">#P002</td>
+                                <td data-label="NOME DO CLIENTE">Ana Carla</td>
+                                <td data-label="STATUS"><span
+                                        class="badge rounded-pill text-bg-danger badge-status">Cancelado</span></td>
+                                <td data-label="ENTREGADOR ATRIBUÍDO">Joãozinho Vida Loka</td>
+                                <td data-label="VALOR TOTAL">R$ 180,00</td>
+                                <td data-label="DATA/HORA">24/10/2025 13:30</td>
+                                <td data-label="AÇÕES" class="acoes-mobile">
+                                    <a href="#" class="btn btn-sm text-secondary print-btn" title="Imprimir"><i class="fas fa-print"></i></a>
+                                    <a href="#" class="btn btn-sm text-info visualize-btn" title="Visualizar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-sm text-primary edit-btn" title="Editar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-sm text-danger delete-btn" title="Deletar"
+                                        data-bs-toggle="modal" data-bs-target="#deletePedidoModal"><i
+                                            class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                            <tr
+                                data-id="P003"
+                                data-cliente="João Silva"
+                                data-telefone="(31) 98765-1234"
+                                data-endereco="Rua do Sol, 789 - Bairro Novo"
+                                data-observacoes="Deixar com o porteiro"
+                                data-entregador="Ana Souza"
+                                data-status="Entregue"
+                                data-taxa="8.00"
+                                data-total="150.00"
+                                data-formas-pagamento="Pix"
+                                data-pago="Sim"
+                                data-itens='[{"nome":"Pizza de Calabresa","quantidade":1,"preco":40.00},{"nome":"Coca-Cola 1L","quantidade":1,"preco":8.00}]'>
+                                <td data-label="ID DO PEDIDO">#P003</td>
+                                <td data-label="NOME DO CLIENTE">João Silva</td>
+                                <td data-label="STATUS"><span
+                                        class="badge rounded-pill text-bg-success badge-status">Entregue</span></td>
+                                <td data-label="ENTREGADOR ATRIBUÍDO">Ana Souza</td>
+                                <td data-label="VALOR TOTAL">R$ 150,00</td>
+                                <td data-label="DATA/HORA">24/10/2025 14:30</td>
+                                <td data-label="AÇÕES" class="acoes-mobile">
+                                    <a href="#" class="btn btn-sm text-secondary print-btn" title="Imprimir"><i class="fas fa-print"></i></a>
+                                    <a href="#" class="btn btn-sm text-info visualize-btn" title="Visualizar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-sm text-primary edit-btn" title="Editar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-sm text-danger delete-btn" title="Deletar"
+                                        data-bs-toggle="modal" data-bs-target="#deletePedidoModal"><i
+                                            class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                            <tr
+                                data-id="P004"
+                                data-cliente="Maria Oliveira"
+                                data-telefone="(61) 99123-4567"
+                                data-endereco="Rua da Praia, 321 - Copacabana"
+                                data-observacoes="Entregar o mais rápido possível"
+                                data-entregador="Ana Souza"
+                                data-status="Em Trânsito"
+                                data-taxa="12.50"
+                                data-total="150.00"
+                                data-formas-pagamento="Cartão de Débito,Dinheiro"
+                                data-pago="Nao"
+                                data-itens='[{"nome":"Sushi Combo","quantidade":1,"preco":80.00},{"nome":"Tempurá de Camarão","quantidade":1,"preco":30.00}]'>
+                                <td data-label="ID DO PEDIDO">#P004</td>
+                                <td data-label="NOME DO CLIENTE">João Silva</td>
+                                <td data-label="STATUS"><span class="badge rounded-pill text-bg-warning badge-status">Em
+                                        Trânsito</span></td>
+                                <td data-label="ENTREGADOR ATRIBUÍDO">Ana Souza</td>
+                                <td data-label="VALOR TOTAL">R$ 150,00</td>
+                                <td data-label="DATA/HORA">24/10/2025 14:30</td>
+                                <td data-label="AÇÕES" class="acoes-mobile">
+                                    <a href="#" class="btn btn-sm text-secondary print-btn" title="Imprimir"><i
+                                            class="fas fa-print"></i></a>
+                                    <a href="#" class="btn btn-sm text-info visualize-btn" title="Visualizar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-sm text-primary edit-btn" title="Editar"
+                                        data-bs-toggle="modal" data-bs-target="#viewEditPedidoModal"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-sm text-danger delete-btn" title="Deletar"
+                                        data-bs-toggle="modal" data-bs-target="#deletePedidoModal"><i
+                                            class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="novoPedidoModal" tabindex="-1" aria-labelledby="novoPedidoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-custom text-white">
+                    <h5 class="modal-title" id="novoPedidoModalLabel">Adicionar Novo Pedido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <h6 class="text-primary mb-3"><i class="fas fa-user me-2"></i> Dados do Cliente</h6>
+                            <div class="col-md-6 mb-3">
+                                <label for="nomeCliente" class="form-label">Nome do Cliente</label>
+                                <input type="text" class="form-control" id="nomeCliente" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="telefoneContato" class="form-label">Telefone de Contato</label>
+                                <input type="tel" class="form-control" id="telefoneContato" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="enderecoEntrega" class="form-label">Endereço de Entrega</label>
+                                <input type="text" class="form-control" id="enderecoEntrega" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="observacoes" class="form-label">Observações</label>
+                                <textarea class="form-control" id="observacoes" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mb-3" id="itensPedidoContainer">
+                            <h6 class="text-success mb-3"><i class="fas fa-box me-2"></i> Itens do Pedido</h6>
+                            <div class="col-12 mb-3 item-pedido-row">
+                                <div class="row g-2 align-items-end">
+                                    <div class="col-md-5">
+                                        <label for="itemNome" class="form-label">Item</label>
+                                        <input type="text" class="form-control item-input-field" id="itemNome">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="itemQuantidade" class="form-label">Quantidade</label>
+                                        <input type="number" class="form-control item-input-field" id="itemQuantidade"
+                                            min="1" value="1">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="itemPreco" class="form-label">Preço Unitário</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">R$</span>
+                                            <input type="number" class="form-control item-input-field" id="itemPreco"
+                                                step="0.01" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger w-100 delete-item-btn"><i
+                                                class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="addItemBtn">
+                            <i class="fas fa-plus me-1"></i> Adicionar Item
+                        </button>
+
+                        <hr>
+
+                        <div class="row">
+                            <h6 class="text-warning mb-3"><i class="fas fa-credit-card me-2"></i> Pagamento</h6>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Formas de Pagamento</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="formaPagamentoPix"
+                                        name="formaPagamento" value="Pix">
+                                    <label class="form-check-label" for="formaPagamentoPix">Pix</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="formaPagamentoDinheiro"
+                                        name="formaPagamento" value="Dinheiro">
+                                    <label class="form-check-label" for="formaPagamentoDinheiro">Dinheiro</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="formaPagamentoCredito"
+                                        name="formaPagamento" value="Cartão de Crédito">
+                                    <label class="form-check-label" for="formaPagamentoCredito">Cartão de
+                                        Crédito</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="formaPagamentoDebito"
+                                        name="formaPagamento" value="Cartão de Débito">
+                                    <label class="form-check-label" for="formaPagamentoDebito">Cartão de Débito</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check mt-4 pt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="pagoCheckbox">
+                                    <label class="form-check-label" for="pagoCheckbox">
+                                        Já está pago?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <h6 class="text-info mb-3"><i class="fas fa-info-circle me-2"></i> Detalhes</h6>
+                            <div class="col-md-6 mb-3">
+                                <label for="taxaEntrega" class="form-label">Taxa de Entrega</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="taxaEntrega" step="0.01" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="entregadorAtribuido" class="form-label">Atribuir Entregador</label>
+                                <select class="form-select" id="entregadorAtribuido">
+                                    <option selected disabled value="">Selecione...</option>
+                                    <option>Ana Souza</option>
+                                    <option>Carlos Santos</option>
+                                    <option>Roberto Mendes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="pedidoStatus" class="form-label">Status do Pedido</label>
+                                <select class="form-select" id="pedidoStatus">
+                                    <option selected disabled value="">Selecione...</option>
+                                    <option>Aguardando Coleta</option>
+                                    <option>Em Trânsito</option>
+                                    <option>Entregue</option>
+                                    <option>Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="fw-bold">Subtotal: <span id="subtotal">R$ 0,00</span></p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <p class="fw-bold">Valor Total: <span id="valorTotalPedido">R$ 0,00</span></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewEditPedidoModal" tabindex="-1" aria-labelledby="viewEditPedidoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-custom text-white">
+                    <h5 class="modal-title" id="viewEditPedidoModalLabel"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="viewEditForm">
+                        <div class="row mb-3">
+                            <h6 class="text-primary mb-3"><i class="fas fa-user me-2"></i> Dados do Cliente</h6>
+                            <div class="col-md-6 mb-3">
+                                <label for="viewEditNomeCliente" class="form-label">Nome do Cliente</label>
+                                <input type="text" class="form-control" id="viewEditNomeCliente" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="viewEditTelefoneContato" class="form-label">Telefone de Contato</label>
+                                <input type="tel" class="form-control" id="viewEditTelefoneContato" readonly>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="viewEditEnderecoEntrega" class="form-label">Endereço de Entrega</label>
+                                <input type="text" class="form-control" id="viewEditEnderecoEntrega" readonly>
+                            </div>
+                            <div class="col-12">
+                                <label for="viewEditObservacoes" class="form-label">Observações</label>
+                                <textarea class="form-control" id="viewEditObservacoes" rows="2" readonly></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <h6 class="text-success mb-3"><i class="fas fa-box me-2"></i> Itens do Pedido</h6>
+                            <div class="col-12" id="viewEditItensContainer">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <h6 class="text-warning mb-3"><i class="fas fa-credit-card me-2"></i> Pagamento</h6>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Formas de Pagamento</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="viewEditFormaPagamentoPix"
+                                        name="viewEditFormaPagamento" value="Pix" disabled>
+                                    <label class="form-check-label" for="viewEditFormaPagamentoPix">Pix</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="viewEditFormaPagamentoDinheiro"
+                                        name="viewEditFormaPagamento" value="Dinheiro" disabled>
+                                    <label class="form-check-label"
+                                        for="viewEditFormaPagamentoDinheiro">Dinheiro</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="viewEditFormaPagamentoCredito"
+                                        name="viewEditFormaPagamento" value="Cartão de Crédito" disabled>
+                                    <label class="form-check-label" for="viewEditFormaPagamentoCredito">Cartão de
+                                        Crédito</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="viewEditFormaPagamentoDebito"
+                                        name="viewEditFormaPagamento" value="Cartão de Débito" disabled>
+                                    <label class="form-check-label" for="viewEditFormaPagamentoDebito">Cartão de
+                                        Débito</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check mt-4 pt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="viewEditPagoCheckbox"
+                                        disabled>
+                                    <label class="form-check-label" for="viewEditPagoCheckbox">
+                                        Já está pago?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <h6 class="text-info mb-3"><i class="fas fa-info-circle me-2"></i> Detalhes</h6>
+                            <div class="col-md-6 mb-3">
+                                <label for="viewEditTaxaEntrega" class="form-label">Taxa de Entrega</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="viewEditTaxaEntrega" step="0.01"
+                                        min="0" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="viewEditEntregadorAtribuido" class="form-label">Entregador Atribuído</label>
+                                <select class="form-select" id="viewEditEntregadorAtribuido" disabled>
+                                    <option>Ana Souza</option>
+                                    <option>Carlos Santos</option>
+                                    <option>Roberto Mendes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="viewEditPedidoStatus" class="form-label">Status do Pedido</label>
+                                <select class="form-select" id="viewEditPedidoStatus" disabled>
+                                    <option>Aguardando Coleta</option>
+                                    <option>Em Trânsito</option>
+                                    <option>Entregue</option>
+                                    <option>Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="fw-bold">Subtotal: <span id="viewEditSubtotal">R$ 0,00</span></p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <p class="fw-bold">Valor Total: <span id="viewEditValorTotal">R$ 0,00</span></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary d-none" id="saveEditBtn">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletePedidoModal" tabindex="-1" aria-labelledby="deletePedidoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deletePedidoModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                    <p>Tem certeza de que deseja excluir este pedido? Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/pedidos.js' %}"></script>
+</body>
+
+</html>
