@@ -1,0 +1,48 @@
+# 1. Nome do Workflow
+name: Deploy em Servidor de Produção
+
+# 2. Gatilho (Trigger)
+on:
+  push:
+    branches:
+      - main  # Executa apenas em pushes para a branch 'main'
+
+# 3. Tarefas (Jobs)
+jobs:
+  deploy:
+    # 4. Ambiente de Execução
+    runs-on: ubuntu-latest
+
+    # 5. Passos (Steps)
+    steps:
+    # Passo 5.1: Baixar o código do repositório para o ambiente do Actions
+    - name: Checkout do Repositório
+      uses: actions/checkout@v4
+
+    # Passo 5.2 (Opcional): Configurar o ambiente, ex: Node.js
+    # Descomente e ajuste se sua aplicação precisar de um passo de build
+    # - name: Setup Node.js
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: '20'
+    # - name: Instalar dependências e Build
+    #   run: |
+    #     npm install
+    #     npm run build
+
+    # Passo 5.3: Executar a ação de deploy via SSH
+    - name: Deploy no Servidor
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "Iniciando deploy..."
+          cd /var/www/meu-app # Navega para o diretório da aplicação no SERVIDOR
+          git pull origin main # Puxa as últimas alterações
+          echo "Instalando dependências..."
+          npm install --production # Instala apenas dependências de produção (exemplo Node.js)
+          echo "Reiniciando a aplicação..."
+          pm2 restart nome-da-minha-app # Reinicia a aplicação com PM2 (exemplo Node.js)
+          echo "Deploy finalizado com sucesso!"
