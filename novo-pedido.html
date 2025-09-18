@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Pedido</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/CSS/pedidos.css">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-custom shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="painel.html">
+                <i class="fas fa-chart-line me-2"></i> Painel Cliente
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cliente-painel.html">
+                            <i class="fas fa-tachometer-alt me-1"></i> Painel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" aria-current="page" href="/pedidos.html">
+                            <i class="fas fa-shopping-cart me-1"></i> Pedidos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/entregadores.html">
+                            <i class="fas fa-motorcycle me-1"></i> Entregadores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/relatorios.html">
+                            <i class="fas fa-chart-bar me-1"></i> Relatórios
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex ms-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light rounded-pill dropdown-toggle" type="button"
+                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i> Olá, Usuário
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>
+                                    Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-gradient-custom text-white">
+                <h5 class="card-title mb-0">Adicionar Novo Pedido</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row mb-3">
+                        <h6 class="text-primary mb-3"><i class="fas fa-user me-2"></i> Dados do Cliente</h6>
+                        <div class="col-md-6 mb-3">
+                            <label for="nomeCliente" class="form-label">Nome do Cliente</label>
+                            <input type="text" class="form-control" id="nomeCliente" placeholder="Ex: João Silva" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="telefoneContato" class="form-label">Telefone de Contato</label>
+                            <input type="tel" class="form-control" id="telefoneContato" placeholder="Ex: (11) 98765-4321" required>
+                        </div>
+                        <h6 class="text-secondary mb-3"><i class="fas fa-map-marker-alt me-2"></i> Endereço de Entrega
+                        </h6>
+                        <div class="col-md-8 mb-3">
+                            <label for="enderecoLogradouro" class="form-label">Logradouro</label>
+                            <input type="text" class="form-control" id="enderecoLogradouro" placeholder="Ex: Av. Brasil" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="enderecoNumero" class="form-label">Número</label>
+                            <input type="text" class="form-control" id="enderecoNumero" placeholder="Ex: 123" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="enderecoCep" class="form-label">CEP</label>
+                            <input type="text" class="form-control" id="enderecoCep" placeholder="Ex: 01234-567" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="enderecoMunicipio" class="form-label">Município</label>
+                            <input type="text" class="form-control" id="enderecoMunicipio" placeholder="Ex: São Paulo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="enderecoEstado" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="enderecoEstado" placeholder="Ex: SP" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="enderecoComplemento" class="form-label">Complemento</label>
+                            <input type="text" class="form-control" id="enderecoComplemento" placeholder="Ex: Apto 101, Bloco A">
+                        </div>
+                        <div class="col-12">
+                            <label for="observacoes" class="form-label">Observações</label>
+                            <textarea class="form-control" id="observacoes" rows="2" placeholder="Ex: Deixar o pedido com o porteiro."></textarea>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row mb-3" id="itensPedidoContainer">
+                        <h6 class="text-success mb-3"><i class="fas fa-box me-2"></i> Itens do Pedido</h6>
+                        <div class="col-12 mb-3 item-pedido-row">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md-5">
+                                    <label for="itemNome" class="form-label">Item</label>
+                                    <input type="text" class="form-control item-input-field" id="itemNome" placeholder="Ex: Pizza Grande Mussarela">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="itemQuantidade" class="form-label">Quantidade</label>
+                                    <input type="number" class="form-control item-input-field" id="itemQuantidade"
+                                        min="1" value="1" placeholder="1">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="itemPreco" class="form-label">Preço Unitário</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">R$</span>
+                                        <input type="number" class="form-control item-input-field" id="itemPreco"
+                                            step="0.01" min="0" placeholder="0.00">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger w-100 delete-item-btn"><i
+                                            class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="addItemBtn">
+                        <i class="fas fa-plus me-1"></i> Adicionar Mais Item
+                    </button>
+
+                    <hr>
+
+                    <div class="row">
+                        <h6 class="text-warning mb-3"><i class="fas fa-credit-card me-2"></i> Pagamento</h6>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Formas de Pagamento</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="formaPagamentoPix"
+                                    name="formaPagamento" value="Pix">
+                                <label class="form-check-label" for="formaPagamentoPix">Pix</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="formaPagamentoDinheiro"
+                                    name="formaPagamento" value="Dinheiro">
+                                <label class="form-check-label" for="formaPagamentoDinheiro">Dinheiro</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="formaPagamentoCredito"
+                                    name="formaPagamento" value="Cartão de Crédito">
+                                <label class="form-check-label" for="formaPagamentoCredito">Cartão de
+                                    Crédito</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="formaPagamentoDebito"
+                                    name="formaPagamento" value="Cartão de Débito">
+                                <label class="form-check-label" for="formaPagamentoDebito">Cartão de Débito</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check mt-4 pt-2">
+                                <input class="form-check-input" type="checkbox" value="" id="pagoCheckbox">
+                                <label class="form-check-label" for="pagoCheckbox">
+                                    Já está pago?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <h6 class="text-info mb-3"><i class="fas fa-info-circle me-2"></i> Detalhes</h6>
+                        <div class="col-md-6 mb-3">
+                            <label for="taxaEntrega" class="form-label">Taxa de Entrega</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="taxaEntrega" step="0.01" value="0" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="entregadorAtribuido" class="form-label">Atribuir Entregador</label>
+                            <select class="form-select" id="entregadorAtribuido">
+                                <option selected disabled value="">Selecione...</option>
+                                <option>Ana Souza</option>
+                                <option>Carlos Santos</option>
+                                <option>Roberto Mendes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pedidoStatus" class="form-label">Status do Pedido</label>
+                            <select class="form-select" id="pedidoStatus">
+                                <option selected disabled value="">Selecione...</option>
+                                <option>Aguardando Coleta</option>
+                                <option>Em Trânsito</option>
+                                <option>Entregue</option>
+                                <option>Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="fw-bold">Subtotal: <span id="subtotal">R$ 0,00</span></p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <p class="fw-bold">Valor Total: <span id="valorTotalPedido">R$ 0,00</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Salvar Pedido</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+</html>

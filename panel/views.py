@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
-def panel_view(request):
+
+@login_required(login_url="login")
+def painel_view(request):
     return render(request, 'cliente-painel.html')
+
